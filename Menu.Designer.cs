@@ -31,6 +31,7 @@ namespace iMiner
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHome = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,12 +74,21 @@ namespace iMiner
             // menuFile
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuHome,
             this.menuSettings,
             this.menuAbout,
             this.menuExit});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(46, 24);
             this.menuFile.Text = "File";
+            // 
+            // menuHome
+            // 
+            this.menuHome.Name = "menuHome";
+            this.menuHome.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.menuHome.Size = new System.Drawing.Size(203, 26);
+            this.menuHome.Text = "Home";
+            this.menuHome.Click += new System.EventHandler(this.ReturnToHome);
             // 
             // menuSettings
             // 
@@ -285,7 +295,7 @@ namespace iMiner
             this.lbClose.AutoSize = true;
             this.lbClose.BackColor = System.Drawing.Color.Transparent;
             this.lbClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbClose.Location = new System.Drawing.Point(965, 4);
+            this.lbClose.Location = new System.Drawing.Point(960, 4);
             this.lbClose.Name = "lbClose";
             this.lbClose.Size = new System.Drawing.Size(16, 20);
             this.lbClose.TabIndex = 3;
@@ -319,20 +329,25 @@ namespace iMiner
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
+        // File
         private System.Windows.Forms.ToolStripMenuItem menuFile;
+        private System.Windows.Forms.ToolStripMenuItem menuHome;
         private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuAbout;
         private System.Windows.Forms.ToolStripMenuItem menuExit;
+        // Game
         private System.Windows.Forms.ToolStripMenuItem menuGame;
         private System.Windows.Forms.ToolStripMenuItem menuNew;
         private System.Windows.Forms.ToolStripMenuItem menuEasy;
         private System.Windows.Forms.ToolStripMenuItem menuMedium;
         private System.Windows.Forms.ToolStripMenuItem menuHard;
         private System.Windows.Forms.ToolStripMenuItem menuGamePlay;
+        // Records
         private System.Windows.Forms.ToolStripMenuItem menuRecords;
         private System.Windows.Forms.ToolStripMenuItem menuRecShow;
         private System.Windows.Forms.ToolStripMenuItem menuRecExport;
         private System.Windows.Forms.ToolStripMenuItem menuRecImport;
+        // FormInfo
         private System.Windows.Forms.ToolStripMenuItem menuFormInfo;
 
         private System.Windows.Forms.Panel panControls;

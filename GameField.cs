@@ -16,7 +16,7 @@ namespace iMiner
         internal const int NotStarted = 0, Running = 1, Ended = -1;
 
         private readonly Field Fields;
-        private readonly PictureBox[][] Grid;
+        private readonly PictureBox[,] Grid;
 
         internal int GameStatus = NotStarted;
         private int ElapsedSeconds;
@@ -28,14 +28,11 @@ namespace iMiner
             lbBest.Text = $"Best: {bestScore}";
 
             Fields = new Field(row, col, mines);
-
-            Grid = new PictureBox[row][];
-            for (int i = 0; i < row; i++)
-                Grid[i] = new PictureBox[col];
+            Grid = new PictureBox[row, col];
             for (int i = 0; i < row; i++)
                 for (int j = 0; j < col; j++)
                 {
-                    Grid[i][j] = new PictureBox()
+                    Grid[i,j] = new PictureBox()
                     {
                         Name = i + "," + j,
                         BackColor = Color.White,
@@ -44,10 +41,10 @@ namespace iMiner
                         BorderStyle = BorderStyle.FixedSingle,
                         Location = new Point(size * j, size * i)
                     };
-                    Grid[i][j].MouseUp += new MouseEventHandler(Grid_MouseUp);
+                    Grid[i,j].MouseUp += new MouseEventHandler(Grid_MouseUp);
 
                     panFields.Size = new Size(col * size, row * size);
-                    panFields.Controls.Add(Grid[i][j]);
+                    panFields.Controls.Add(Grid[i,j]);
                 }
 
             this.ClientSize = new Size(col * size, panGameInfo.Height + panFields.Height);
@@ -77,37 +74,55 @@ namespace iMiner
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    if (Grid[pbX][pbY].Image == (Image)Properties.Resources.mine)
-                        return; // To-do
-
-                    if (Fields.IsMine(pbX, pbY))
+                    if (Fields.IsFlagged(pbX,pbY))
+                        break;
+                    else if (Fields.IsMine(pbX, pbY))
                         EndGame(LooseGame);
-
-                    if (Fields.Discovered.Contains(pbX * Grid[0].Length + pbY))
+                    else if (Fields.IsDiscoveredSafeCell(pbX, pbY))
                     {
-                        int mines = Fields.CountMines(pbX, pbY);
-                        int temps = int.Parse(Grid[pbX][pbY].Tag.ToString());
-                        if (mines == temps)
-                            DrawSafeCells(pbX, pbY);
-
+                        int flagsCnt = Fields.CountFlags(pbX, pbY);
+                        int minesCnt = int.Parse(Grid[pbX, pbY].Tag.ToString());
+                        if (flagsCnt == minesCnt)
+                        {
+                            HashSet<int> safeCells = Fields.GetSafeNeighbors(pbX, pbY);
+                            foreach( int cell in safeCells )
+                            {
+                                int x = cell / Grid.GetLength(1);
+                                int y = cell % Grid.GetLength(1);
+                                if(Fields.CountMines(x, y) == 0)
+                                    DrawSafeCells(x, y);
+                                else
+                                {
+                                    if(!Fields.IsDiscoveredSafeCell(x,y))
+                                        Fields.Discovered.Add(cell);
+                                    Grid[x, y].BackColor = Color.LightGray;
+                                    minesCnt = Fields.CountMines(x, y);
+                                    Grid[x, y].Tag = minesCnt;
+                                    Grid[x, y].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
+                                }
+                            }
+                        }
                     }
                     else DrawSafeCells(pbX, pbY);
 
-                    if (Fields.Win()) EndGame(WinGame);
+                    if (Fields.IsWin()) EndGame(WinGame);
                     break;
                 case MouseButtons.Right:
-                    if (Fields.Flagged.Contains(pbX * Grid[0].Length + pbY))
+                    if(Fields.IsDiscoveredSafeCell(pbX, pbY))
+                        break;
+
+                    if (Fields.IsFlagged(pbX, pbY))
                     {
                         pb.BackColor = Color.White;
                         pb.Image = null;
-                        Fields.Flagged.Remove(pbX * Grid[0].Length + pbY);
+                        Fields.Flagged.Remove(pbX * Grid.GetLength(1) + pbY);
                         lbBombs.Text = (int.Parse(lbBombs.Text) + 1).ToString();
                     }
                     else
                     {
                         pb.BackColor = Color.Green;
                         pb.Image = Properties.Resources.mine;
-                        Fields.Flagged.Add(pbX * Grid[0].Length + pbY);
+                        Fields.Flagged.Add(pbX * Grid.GetLength(1) + pbY);
                         lbBombs.Text = (int.Parse(lbBombs.Text) - 1).ToString();
                     }
                     break;
@@ -115,19 +130,19 @@ namespace iMiner
         }
         private void DrawSafeCells(int pbX, int pbY)
         {
-            foreach (int safeCell in Fields.GetSafeCells(pbX, pbY))
+            foreach (int safeCell in Fields.GetSafeIslind(pbX, pbY))
             {
-                int i = safeCell / Grid[0].Length;
-                int j = safeCell % Grid[0].Length;
-                Grid[i][j].BackColor = Color.LightGray;
+                int i = safeCell / Grid.GetLength(1);
+                int j = safeCell % Grid.GetLength(1);
+                Grid[i,j].BackColor = Color.LightGray;
                 int minesCnt = Fields.CountMines(i, j);
                 if (minesCnt > 0)
                 {
-                    Grid[i][j].Tag = minesCnt;
-                    Grid[i][j].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
+                    Grid[i,j].Tag = minesCnt;
+                    Grid[i,j].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
                 }
                 else
-                    Grid[i][j].Enabled = false;
+                    Grid[i,j].Enabled = false;
             }
         }
         private void GameTimer_Tick(object sender, EventArgs e)
@@ -142,17 +157,18 @@ namespace iMiner
             tClock.Stop();
             if (exitCode == WinGame)
             {
-                Menu.AddRecordToList(Menu.ModeEasy, new Score("Player1", ElapsedSeconds));
+                if(Menu.AddRecordToList(Menu.GameMode, new Score("Player1", ElapsedSeconds)))
+                    this.lbBest.Text = $"Best: {Score.GetResult(ElapsedSeconds)}";
                 MessageBox.Show("You discovered all safe squares!", "Victory");
             }
             else
             {
                 foreach (int mine in Fields.GetAllMines())
                 {
-                    int i = mine / Grid[0].Length;
-                    int j = mine % Grid[0].Length;
-                    Grid[i][j].BackColor = Color.Red;
-                    Grid[i][j].Image = (Image)Properties.Resources.mine;
+                    int i = mine / Grid.GetLength(1);
+                    int j = mine % Grid.GetLength(1);
+                    Grid[i,j].BackColor = Color.Red;
+                    Grid[i,j].Image = (Image)Properties.Resources.mine;
                 }
                 MessageBox.Show("You clicked on a mine!", "Game Over");
             }

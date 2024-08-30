@@ -16,9 +16,9 @@ namespace iMiner
         static readonly List<Score> RecordsEasy = new List<Score>(10);
         static readonly List<Score> RecordsMedium = new List<Score>(10);
         static readonly List<Score> RecordsHard = new List<Score>(10);
-
-        static int GameMode = ModeMenu;
         static int HiScore_Easy = 0, HiScore_Medium = 0, HiScore_Hard = 0;
+
+        internal static int GameMode = ModeMenu;
         internal const int ModeMenu = 0, ModeEasy = 1, ModeMedium = 2, ModeHard = 3, ModeRecords = 4;
 
         PictureBox pbLogo;
@@ -28,7 +28,6 @@ namespace iMiner
         {
             InitializeComponent();
             HomeLogoLoad();
-            lbClose.Location = new Point(this.Width - 55, 5);
             AddRecordToList(ModeEasy, new Score("Clery", 500));
             AddRecordToList(ModeEasy, new Score("Sasha", 400));
             AddRecordToList(ModeEasy, new Score("Lila", 300));
@@ -57,43 +56,49 @@ namespace iMiner
             };
             this.panControls.Controls.Add(pbLogo);
         }
-        public static void AddRecordToList(int levelType, Score newRecord)
+        public static bool AddRecordToList(int levelType, Score newRecord)
         {
+            bool isNewBestAdded = false;
             int scoreInSeconds = newRecord.Result;
-            if (HiScore_Easy == 0) HiScore_Easy = scoreInSeconds;
-            if (HiScore_Medium == 0) HiScore_Medium = scoreInSeconds;
-            if (HiScore_Hard == 0) HiScore_Hard = scoreInSeconds;
 
             switch (levelType)
             {
                 case ModeEasy:
+                    if (HiScore_Easy == 0) HiScore_Easy = scoreInSeconds;
                     if (scoreInSeconds <= HiScore_Easy)
                     {
                         RecordsEasy.Add(newRecord);
                         if (RecordsEasy.Count > 1)
                             RecordsEasy.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
                         HiScore_Easy = scoreInSeconds;
+                        isNewBestAdded = true;
                     }
                     break;
                 case ModeMedium:
+                    if (HiScore_Medium == 0) HiScore_Medium = scoreInSeconds;
                     if (scoreInSeconds <= HiScore_Medium)
                     {
                         RecordsMedium.Add(newRecord);
                         if (RecordsMedium.Count > 1)
                             RecordsMedium.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
                         HiScore_Medium = scoreInSeconds;
+                        isNewBestAdded = true;
                     }
                     break;
                 case ModeHard:
+                    if (HiScore_Hard == 0) HiScore_Hard = scoreInSeconds;
                     if (scoreInSeconds <= HiScore_Hard)
                     {
                         RecordsHard.Add(newRecord);
                         if (RecordsHard.Count > 1)
                             RecordsHard.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
                         HiScore_Hard = scoreInSeconds;
+                        isNewBestAdded = true;
                     }
                     break;
             }
+
+            return isNewBestAdded;
         }
         private DialogResult StopCurrentGame()
         {
@@ -104,7 +109,7 @@ namespace iMiner
         {
             if (GameMode != ModeMenu)
             {
-                if(gameField.GameStatus != GameField.NotStarted)
+                if(gameField.GameStatus == GameField.Running)
                     if (StopCurrentGame() == DialogResult.No) return;
 
                 panControls.Controls.Clear();
@@ -128,22 +133,25 @@ namespace iMiner
         }
         private void ExitGame(object sender, EventArgs e)
         {
+            if (gameField.GameStatus == GameField.Running)
+                if (StopCurrentGame() == DialogResult.No) return;
+                else {  } // To-Do: Stop Timer, ... - maybe a new method in the GameField class
+            
             DialogResult result = MessageBox.Show("To prevent loosing all of your data\n" +
                 "whould you like to export the records log?", "Export log",
                 MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
                 LogExport(sender, e);
-            else if (result != DialogResult.Cancel)
+            else if (result == DialogResult.No)
                 this.Close();
         }
         private void StartGame(object sender, EventArgs e)
         {
             ToolStripMenuItem tsOption = (ToolStripMenuItem)sender;
 
-            if (gameField.GameStatus != GameField.NotStarted)
+            if (gameField.GameStatus == GameField.Running)
             {
-                DialogResult choice = StopCurrentGame();
-                if (choice != DialogResult.Yes) return;
+                if (StopCurrentGame() == DialogResult.No) return;
             }
 
             int row = 0, col = 0, bombs = 0, bestScore = 0;
@@ -151,14 +159,14 @@ namespace iMiner
             {
                 case "Easy":
                     GameMode = ModeEasy;
-                    row = col = 13;
-                    bombs = 10;
+                    row = col = 16;
+                    bombs = 13;
                     bestScore = HiScore_Easy;
                     break;
                 case "Medium":
                     GameMode = ModeMedium;
-                    row = col = 16;
-                    bombs = 25;
+                    row = col = 18;
+                    bombs = 28;
                     bestScore = HiScore_Medium;
                     break;
                 case "Hard":
@@ -185,7 +193,7 @@ namespace iMiner
         {
             if (GameMode == ModeRecords)
                 return;
-            else if (gameField.GameStatus != GameField.NotStarted)
+            else if (gameField.GameStatus == GameField.Running)
                 if (StopCurrentGame() == DialogResult.No) return;
 
             GameMode = ModeRecords;
@@ -231,8 +239,8 @@ namespace iMiner
             ListViewItem[] lvItems = new ListViewItem[listData.Count];
             for (int i = 0; i < listData.Count; i++)
             {
-                Score sc = listData.ElementAt(i);
-                lvItems[i] = new ListViewItem(new string[] { "#" + (i + 1), sc.Player, Score.GetResult(sc) });
+                Score record = listData.ElementAt(i);
+                lvItems[i] = new ListViewItem(new string[] { "#" + (i + 1), record.Player, Score.GetResult(record) });
             }
             lvRecords.Items.AddRange(lvItems);
 
@@ -299,7 +307,7 @@ namespace iMiner
             private bool DoClose()
             {
                 bool close = true;
-                if (this.Text != "Records" && GameStatus != NotStarted)
+                if (this.Text != "Records" && GameStatus == Running)
                 {
                     DialogResult result = MessageBox.Show("Game proccess will be lost!\nDo you want to continue?",
                                 "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -312,13 +320,9 @@ namespace iMiner
         {
             if (GameMode == ModeMenu)
                 pbLogo.Size = panControls.Size;
-            else
-            {
-                if (GameMode == ModeEasy || GameMode == ModeMedium || GameMode == ModeHard)
-                    gameField.Location = new Point((panControls.Width - gameField.Width) / 2, 0);
-
-                lbClose.Location = new Point(this.Width - 55, 5);
-            }
+            else if (GameMode == ModeEasy || GameMode == ModeMedium || GameMode == ModeHard)
+                gameField.Location = new Point((panControls.Width - gameField.Width) / 2, 0);
+            lbClose.Location = new Point(this.Width - 55, 5);
         }
     }
 }
