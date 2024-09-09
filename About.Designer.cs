@@ -29,92 +29,92 @@ namespace iMiner
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.lbTitle = new System.Windows.Forms.Label();
+            this.lbDevEmail = new System.Windows.Forms.Label();
+            this.lbVersion = new System.Windows.Forms.Label();
+            this.lbDevName = new System.Windows.Forms.Label();
+            this.lbRights = new System.Windows.Forms.Label();
+            this.gbDevContact = new System.Windows.Forms.GroupBox();
+            this.gbDevContact.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lbTitle
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Snap ITC", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(129, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(163, 48);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "iMiner";
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.Font = new System.Drawing.Font("Snap ITC", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbTitle.Location = new System.Drawing.Point(129, 9);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(163, 48);
+            this.lbTitle.TabIndex = 0;
+            this.lbTitle.Text = "iMiner";
             // 
-            // label2
+            // lbDevEmail
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(51, 66);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(155, 26);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "222913@mgu.bg";
+            this.lbDevEmail.AutoSize = true;
+            this.lbDevEmail.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbDevEmail.Location = new System.Drawing.Point(51, 66);
+            this.lbDevEmail.Name = "lbDevEmail";
+            this.lbDevEmail.Size = new System.Drawing.Size(155, 26);
+            this.lbDevEmail.TabIndex = 1;
+            this.lbDevEmail.Text = "222913@mgu.bg";
             // 
-            // label3
+            // lbVersion
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Sylfaen", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(135, 57);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(155, 29);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Version 0.0.1";
+            this.lbVersion.AutoSize = true;
+            this.lbVersion.Font = new System.Drawing.Font("Sylfaen", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbVersion.Location = new System.Drawing.Point(135, 57);
+            this.lbVersion.Name = "lbVersion";
+            this.lbVersion.Size = new System.Drawing.Size(155, 29);
+            this.lbVersion.TabIndex = 2;
+            this.lbVersion.Text = "Version 0.0.1";
             // 
-            // label5
+            // lbDevName
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(20, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(214, 26);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Anna Yordanova Ilieva";
+            this.lbDevName.AutoSize = true;
+            this.lbDevName.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbDevName.Location = new System.Drawing.Point(20, 40);
+            this.lbDevName.Name = "lbDevName";
+            this.lbDevName.Size = new System.Drawing.Size(214, 26);
+            this.lbDevName.TabIndex = 4;
+            this.lbDevName.Text = "Anna Yordanova Ilieva";
             // 
-            // label6
+            // lbRights
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Sylfaen", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.Location = new System.Drawing.Point(94, 86);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(235, 29);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "© All rights reserved";
+            this.lbRights.AutoSize = true;
+            this.lbRights.Font = new System.Drawing.Font("Sylfaen", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbRights.Location = new System.Drawing.Point(94, 86);
+            this.lbRights.Name = "lbRights";
+            this.lbRights.Size = new System.Drawing.Size(235, 29);
+            this.lbRights.TabIndex = 5;
+            this.lbRights.Text = "© All rights reserved";
             // 
-            // groupBox1
+            // gbDevContact
             // 
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(84, 145);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(253, 125);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Developer contact";
+            this.gbDevContact.Controls.Add(this.lbDevName);
+            this.gbDevContact.Controls.Add(this.lbDevEmail);
+            this.gbDevContact.Location = new System.Drawing.Point(84, 145);
+            this.gbDevContact.Name = "gbDevContact";
+            this.gbDevContact.Size = new System.Drawing.Size(253, 125);
+            this.gbDevContact.TabIndex = 6;
+            this.gbDevContact.TabStop = false;
+            this.gbDevContact.Text = "Developer contact";
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(421, 295);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.gbDevContact);
+            this.Controls.Add(this.lbRights);
+            this.Controls.Add(this.lbVersion);
+            this.Controls.Add(this.lbTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "About";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About iMiner";
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.AboutEscape);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbDevContact.ResumeLayout(false);
+            this.gbDevContact.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,11 +122,11 @@ namespace iMiner
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lbTitle;
+        private System.Windows.Forms.Label lbDevEmail;
+        private System.Windows.Forms.Label lbVersion;
+        private System.Windows.Forms.Label lbDevName;
+        private System.Windows.Forms.Label lbRights;
+        private System.Windows.Forms.GroupBox gbDevContact;
     }
 }

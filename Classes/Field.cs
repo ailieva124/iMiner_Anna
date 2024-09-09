@@ -54,13 +54,17 @@ namespace iMiner
                         count++;
             return count;
         }
-        internal int CountFlags(int x, int y)
+        internal int CountFlags(int x, int y, out HashSet<int> flagged)
         {
+            flagged = new HashSet<int>();
             int count = 0;
             for (int i = Math.Max(x - 1, 0); i <= Math.Min(x + 1, Row - 1); i++)
                 for (int j = Math.Max(y - 1, 0); j <= Math.Min(y + 1, Col - 1); j++)
                     if (IsFlagged(i, j))
+                    {
                         count++;
+                        flagged.Add(i * Col + j);
+                    }
             return count;
         }
 

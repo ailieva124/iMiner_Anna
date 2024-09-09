@@ -26,7 +26,7 @@ namespace iMiner
         {
             lbBombs.Text = mines.ToString();
             lbBest.Text = $"Best: {bestScore}";
-
+            
             Fields = new Field(row, col, mines);
             Grid = new PictureBox[row, col];
             for (int i = 0; i < row; i++)
@@ -47,11 +47,44 @@ namespace iMiner
                     panFields.Controls.Add(Grid[i,j]);
                 }
 
-            this.ClientSize = new Size(col * size, panGameInfo.Height + panFields.Height);
+            this.ClientSize = new Size(col * size, panInfo.Height + panFields.Height);
             this.MinimumSize = this.Size;
-            panGameInfo.Location = new Point((this.ClientSize.Width - panGameInfo.Width) / 2, panGameInfo.Location.Y);
+            pbHelper.Location = new Point(panInfo.Width / 2, pbHelper.Location.Y);
         }
 
+        private void GetHint(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            do
+            {
+                int x = rand.Next(Grid.GetLength(0));
+                int y = rand.Next(Grid.GetLength(1));
+
+                if (Fields.IsMine(x, y))
+                    continue;
+                else if (Fields.IsFlagged(x, y))
+                    continue;
+                else if (Fields.IsDiscoveredSafeCell(x, y))
+                    continue;
+                else
+                {
+                    int minesCnt = Fields.CountMines(x, y);
+                    if (minesCnt > 0)
+                    {
+                        Grid[x, y].BackColor = Color.LightGray;
+                        Grid[x, y].Tag = minesCnt;
+                        Grid[x, y].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
+                        Fields.Discovered.Add(x * Grid.GetLength(1) + y);
+                        if (Fields.IsWin())
+                            EndGame(WinGame);
+                        break;
+                    }
+                    else
+                        continue;
+                }
+            } while (true);
+
+        }
         private void Grid_MouseUp(object sender, MouseEventArgs e)
         {
 
@@ -66,6 +99,7 @@ namespace iMiner
                 GameStatus = Running;
                 Fields.Initialize(pbX, pbY);
                 DrawSafeCells(pbX, pbY);
+                pbHelper.Visible = true;
                 return;
             }
             else if (GameStatus == Ended)
@@ -73,6 +107,7 @@ namespace iMiner
 
             switch (e.Button)
             {
+                // Click for dig
                 case MouseButtons.Left:
                     if (Fields.IsFlagged(pbX,pbY))
                         break;
@@ -80,10 +115,15 @@ namespace iMiner
                         EndGame(LooseGame);
                     else if (Fields.IsDiscoveredSafeCell(pbX, pbY))
                     {
-                        int flagsCnt = Fields.CountFlags(pbX, pbY);
+                        HashSet<int> flagged;
+                        int flagsCnt = Fields.CountFlags(pbX, pbY, out flagged);
                         int minesCnt = int.Parse(Grid[pbX, pbY].Tag.ToString());
                         if (flagsCnt == minesCnt)
                         {
+                            foreach (int flag in flagged)
+                                if (!Fields.IsMine(flag / Grid.GetLength(1), flag % Grid.GetLength(1)))
+                                    return;
+
                             HashSet<int> safeCells = Fields.GetSafeNeighbors(pbX, pbY);
                             foreach( int cell in safeCells )
                             {
@@ -107,6 +147,8 @@ namespace iMiner
 
                     if (Fields.IsWin()) EndGame(WinGame);
                     break;
+
+                // Click for flag
                 case MouseButtons.Right:
                     if(Fields.IsDiscoveredSafeCell(pbX, pbY))
                         break;
@@ -124,6 +166,8 @@ namespace iMiner
                         pb.Image = Properties.Resources.mine;
                         Fields.Flagged.Add(pbX * Grid.GetLength(1) + pbY);
                         lbBombs.Text = (int.Parse(lbBombs.Text) - 1).ToString();
+                        if (int.Parse(lbBombs.Text) < 0)
+                            lbBombs.ForeColor = Color.Red;
                     }
                     break;
             }

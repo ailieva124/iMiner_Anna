@@ -45,7 +45,6 @@ namespace iMiner
             this.menuRecShow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecExport = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFormInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.panControls = new System.Windows.Forms.Panel();
             this.btnHard = new System.Windows.Forms.Button();
             this.btnFame = new System.Windows.Forms.Button();
@@ -63,8 +62,7 @@ namespace iMiner
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
             this.menuGame,
-            this.menuRecords,
-            this.menuFormInfo});
+            this.menuRecords});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(996, 28);
@@ -81,7 +79,7 @@ namespace iMiner
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(46, 24);
             this.menuFile.Text = "File";
-            // 
+            //
             // menuHome
             // 
             this.menuHome.Name = "menuHome";
@@ -202,14 +200,6 @@ namespace iMiner
             this.menuRecImport.Text = "Import Log";
             this.menuRecImport.Click += new System.EventHandler(this.LogImport);
             // 
-            // menuFormInfo
-            // 
-            this.menuFormInfo.Name = "menuFormInfo";
-            this.menuFormInfo.ShortcutKeys = System.Windows.Forms.Keys.F4;
-            this.menuFormInfo.Size = new System.Drawing.Size(105, 24);
-            this.menuFormInfo.Text = "GetThisSizes";
-            this.menuFormInfo.Click += new System.EventHandler(this.GetWindowSize);
-            // 
             // panControls
             // 
             this.panControls.Controls.Add(this.btnHard);
@@ -302,7 +292,7 @@ namespace iMiner
             this.lbClose.Text = "x";
             this.lbClose.Visible = false;
             this.lbClose.Click += new System.EventHandler(this.ReturnToHome);
-            // 
+            //
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -317,6 +307,7 @@ namespace iMiner
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "iMiner";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Menu_Closing);
             this.ClientSizeChanged += new System.EventHandler(this.Menu_Resize);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -347,8 +338,6 @@ namespace iMiner
         private System.Windows.Forms.ToolStripMenuItem menuRecShow;
         private System.Windows.Forms.ToolStripMenuItem menuRecExport;
         private System.Windows.Forms.ToolStripMenuItem menuRecImport;
-        // FormInfo
-        private System.Windows.Forms.ToolStripMenuItem menuFormInfo;
 
         private System.Windows.Forms.Panel panControls;
         private System.Windows.Forms.Label lbClose;
