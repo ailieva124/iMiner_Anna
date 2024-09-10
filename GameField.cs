@@ -13,10 +13,11 @@ namespace iMiner
     public partial class GameField : UserControl
     {
         private const int WinGame = 1, LooseGame = 0;
-        internal const int NotStarted = 0, Running = 1, Ended = -1;
+        internal const int NotStarted = 0, Running = 1, Paused = 2, Ended = -1;
 
         private readonly Field Fields;
         private readonly PictureBox[,] Grid;
+        private Panel PannelInPause;
 
         internal int GameStatus = NotStarted;
         private int ElapsedSeconds;
@@ -26,7 +27,7 @@ namespace iMiner
         {
             lbBombs.Text = mines.ToString();
             lbBest.Text = $"Best: {bestScore}";
-            
+
             Fields = new Field(row, col, mines);
             Grid = new PictureBox[row, col];
             for (int i = 0; i < row; i++)
@@ -187,6 +188,49 @@ namespace iMiner
                 }
                 else
                     Grid[i,j].Enabled = false;
+            }
+        }
+        internal void Game_Pause(object sender, EventArgs e)
+        {
+            tClock.Stop();
+            if (GameStatus == Running)
+            {
+                if (PannelInPause == null)
+                {
+                    PannelInPause = new Panel()
+                    {
+                        Dock = DockStyle.Fill,
+                        BackColor = Color.FromArgb(128, 0, 0, 0)
+                    };
+
+                    PictureBox pbPause = new PictureBox()
+                    {
+                        Cursor = Cursors.Hand,
+                        Size = new Size(300, 300),
+                        BackColor = Color.Transparent,
+                        Image = Properties.Resources.pause,
+                        SizeMode = PictureBoxSizeMode.Zoom
+                    };
+                    pbPause.Click += Game_Resume;
+                    PannelInPause.Controls.Add(pbPause);
+                    panFields.Controls.Add(PannelInPause);
+                    pbPause.Location = new Point((PannelInPause.Width - pbPause.Width) / 2, (PannelInPause.Height - pbPause.Height) / 2);
+                    PannelInPause.BringToFront();
+                }
+                else
+                {
+                    GameStatus = Paused;
+                    PannelInPause.Visible = true;
+                }
+            }
+        }
+        internal void Game_Resume(object sender, EventArgs e)
+        {
+            if (PannelInPause != null)
+            {
+                GameStatus = Running;
+                PannelInPause.Visible = false;
+                tClock.Start();
             }
         }
         private void GameTimer_Tick(object sender, EventArgs e)

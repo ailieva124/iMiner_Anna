@@ -131,7 +131,8 @@ namespace iMiner
             this.pbHelper.TabIndex = 8;
             this.pbHelper.TabStop = false;
             this.pbHelper.Visible = false;
-            this.pbHelper.Click += new System.EventHandler(this.GetHint);// 
+            this.pbHelper.Click += new System.EventHandler(this.GetHint);
+            // 
             // panInfoRight
             // 
             this.panInfoRight.Controls.Add(this.lbBest);

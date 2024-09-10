@@ -100,10 +100,23 @@ namespace iMiner
 
             return isNewBestAdded;
         }
-        private DialogResult StopCurrentGame(string msgTitle = "Exit")
+        private bool doExitRunningGame(string msgTitle = "Exit")
         {
-            return MessageBox.Show("Game proccess will be lost!\nDo you want to continue?",
-                msgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (gameField.GameStatus == GameField.Running || gameField.GameStatus == GameField.Paused)
+            {
+                if(gameField.GameStatus == GameField.Running)
+                    gameField.Game_Pause(null, null);
+                DialogResult question = MessageBox.Show("Game proccess will be lost!\nDo you want to continue?",
+                    msgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (question == DialogResult.No)
+                {
+                    if(gameField.GameStatus != GameField.Paused)
+                        gameField.Game_Resume(null, null);
+                    return false; // Game still running
+                }
+                gameField.GameStatus = GameField.Ended;
+            }
+            return true; // Game is ended or not started
         }
 
         // MenuStrip Events
@@ -111,9 +124,7 @@ namespace iMiner
         {
             if (GameMode != ModeMenu)
             {
-                if(gameField.GameStatus == GameField.Running)
-                    if (StopCurrentGame() == DialogResult.No) return;
-
+                if (!doExitRunningGame()) return;
                 panControls.Controls.Clear();
                 HomeLogoLoad();
                 lbClose.Visible = false;
@@ -121,35 +132,21 @@ namespace iMiner
                 this.Text = AppTitle;
             }
         }
-        private void ShowSettings(object sender, EventArgs e)
-        {
-            // To-do
-        }
-        private void AboutGame(object sender, EventArgs e)
+        private void About_iMiner(object sender, EventArgs e)
         {
             About info = new About();
             info.ShowDialog();
         }
-        private void ExitGame(object sender, EventArgs e)
+        private void Exit_iMiner(object sender, EventArgs e)
         {
-            if (gameField.GameStatus == GameField.Running)
-                if (StopCurrentGame() == DialogResult.No) return;
-                else { } // To-Do: Stop Timer, ... - maybe a new method in the GameField class
-
-            DialogResult result = MessageBox.Show("To prevent loosing all of your data\n" +
-                "whould you like to export the records log?", "Export log",
-                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-                LogExport(sender, e);
-            else if (result == DialogResult.No)
-                this.Close();
+            if (!doExitRunningGame()) return;
+            this.Close(); // Menu_Closing is asking for Log Export
         }
         private void StartGame(object sender, EventArgs e)
         {
             ToolStripMenuItem tsOption = (ToolStripMenuItem)sender;
-
-            if (gameField.GameStatus == GameField.Running)
-                if (StopCurrentGame("New game") == DialogResult.No) return;
+            
+            if(!doExitRunningGame("New game")) return;
 
             int row = 0, col = 0, bombs = 0, bestScore = 0;
             switch (tsOption.Text)
@@ -186,12 +183,14 @@ namespace iMiner
         {
             // To-do
         }
+        private void PauseGame(object sender, EventArgs e)
+        {
+            gameField.Game_Pause(sender, e);
+        }
         private void ShowRecords(object sender, EventArgs e)
         {
-            if (GameMode == ModeRecords)
-                return;
-            else if (gameField.GameStatus == GameField.Running)
-                if (StopCurrentGame() == DialogResult.No) return;
+            if (GameMode == ModeRecords) return;
+            else if(!doExitRunningGame()) return;
 
             GameMode = ModeRecords;
             lbClose.Visible = true;
@@ -288,19 +287,22 @@ namespace iMiner
         }
         private void Menu_Closing(object sender, FormClosingEventArgs e)
         {
-            if (gameField.GameStatus == GameField.Running)
-                if (StopCurrentGame() == DialogResult.No)
+            if (!doExitRunningGame())
+            {
+                e.Cancel = true;
+                return;
+            }
+            switch (MessageBox.Show("To prevent loosing all of your data\nwhould you like to export the records log?",
+                "Export log", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+            {
+                case DialogResult.Yes:
+                    LogExport(sender, e);
+                    return;
+                case DialogResult.Cancel:
+                    ReturnToHome(sender, e);
                     e.Cancel = true;
-                else
-                {
-                    DialogResult result = MessageBox.Show("To prevent loosing all of your data\n" +
-                        "whould you like to export the records log?", "Export log",
-                        MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                    if (result == DialogResult.Yes)
-                        LogExport(sender, e);
-                    else if (result == DialogResult.Cancel)
-                        e.Cancel = true;
-                }
+                    return;
+            }
         }
     }
 }

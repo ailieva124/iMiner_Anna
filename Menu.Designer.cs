@@ -32,7 +32,6 @@ namespace iMiner
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHome = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,6 +39,7 @@ namespace iMiner
             this.menuEasy = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMedium = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHard = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPause = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGamePlay = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecords = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecShow = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,13 +73,12 @@ namespace iMiner
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuHome,
-            this.menuSettings,
             this.menuAbout,
             this.menuExit});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(46, 24);
             this.menuFile.Text = "File";
-            //
+            // 
             // menuHome
             // 
             this.menuHome.Name = "menuHome";
@@ -88,21 +87,13 @@ namespace iMiner
             this.menuHome.Text = "Home";
             this.menuHome.Click += new System.EventHandler(this.ReturnToHome);
             // 
-            // menuSettings
-            // 
-            this.menuSettings.Name = "menuSettings";
-            this.menuSettings.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.menuSettings.Size = new System.Drawing.Size(203, 26);
-            this.menuSettings.Text = "Settings";
-            this.menuSettings.Click += new System.EventHandler(this.ShowSettings);
-            // 
             // menuAbout
             // 
             this.menuAbout.Name = "menuAbout";
             this.menuAbout.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.menuAbout.Size = new System.Drawing.Size(203, 26);
             this.menuAbout.Text = "About iMiner";
-            this.menuAbout.Click += new System.EventHandler(this.AboutGame);
+            this.menuAbout.Click += new System.EventHandler(this.About_iMiner);
             // 
             // menuExit
             // 
@@ -110,12 +101,13 @@ namespace iMiner
             this.menuExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
             this.menuExit.Size = new System.Drawing.Size(203, 26);
             this.menuExit.Text = "Exit";
-            this.menuExit.Click += new System.EventHandler(this.ExitGame);
+            this.menuExit.Click += new System.EventHandler(this.Exit_iMiner);
             // 
             // menuGame
             // 
             this.menuGame.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuNew,
+            this.menuPause,
             this.menuGamePlay});
             this.menuGame.Name = "menuGame";
             this.menuGame.Size = new System.Drawing.Size(62, 24);
@@ -128,7 +120,6 @@ namespace iMiner
             this.menuMedium,
             this.menuHard});
             this.menuNew.Name = "menuNew";
-            this.menuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.menuNew.Size = new System.Drawing.Size(218, 26);
             this.menuNew.Text = "New Game";
             // 
@@ -155,6 +146,14 @@ namespace iMiner
             this.menuHard.Size = new System.Drawing.Size(202, 26);
             this.menuHard.Text = "Hard";
             this.menuHard.Click += new System.EventHandler(this.StartGame);
+            // 
+            // menuPause
+            // 
+            this.menuPause.Name = "menuPause";
+            this.menuPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.menuPause.Size = new System.Drawing.Size(218, 26);
+            this.menuPause.Text = "Pause";
+            this.menuPause.Click += new System.EventHandler(this.PauseGame);
             // 
             // menuGamePlay
             // 
@@ -292,7 +291,7 @@ namespace iMiner
             this.lbClose.Text = "x";
             this.lbClose.Visible = false;
             this.lbClose.Click += new System.EventHandler(this.ReturnToHome);
-            //
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -323,7 +322,6 @@ namespace iMiner
         // File
         private System.Windows.Forms.ToolStripMenuItem menuFile;
         private System.Windows.Forms.ToolStripMenuItem menuHome;
-        private System.Windows.Forms.ToolStripMenuItem menuSettings;
         private System.Windows.Forms.ToolStripMenuItem menuAbout;
         private System.Windows.Forms.ToolStripMenuItem menuExit;
         // Game
@@ -332,6 +330,7 @@ namespace iMiner
         private System.Windows.Forms.ToolStripMenuItem menuEasy;
         private System.Windows.Forms.ToolStripMenuItem menuMedium;
         private System.Windows.Forms.ToolStripMenuItem menuHard;
+        private System.Windows.Forms.ToolStripMenuItem menuPause;
         private System.Windows.Forms.ToolStripMenuItem menuGamePlay;
         // Records
         private System.Windows.Forms.ToolStripMenuItem menuRecords;
