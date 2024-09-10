@@ -102,15 +102,17 @@ namespace iMiner
         }
         private bool doExitRunningGame(string msgTitle = "Exit")
         {
-            if (gameField.GameStatus == GameField.Running || gameField.GameStatus == GameField.Paused)
+            bool modeRunning = (gameField.GameStatus == GameField.Running);
+            bool modePaused = (gameField.GameStatus == GameField.Paused);
+            if (modeRunning || modePaused)
             {
-                if(gameField.GameStatus == GameField.Running)
+                if(modeRunning)
                     gameField.Game_Pause(null, null);
                 DialogResult question = MessageBox.Show("Game proccess will be lost!\nDo you want to continue?",
                     msgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (question == DialogResult.No)
                 {
-                    if(gameField.GameStatus != GameField.Paused)
+                    if(!modePaused) // if it was running, go back to running
                         gameField.Game_Resume(null, null);
                     return false; // Game still running
                 }

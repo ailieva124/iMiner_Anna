@@ -218,10 +218,8 @@ namespace iMiner
                     PannelInPause.BringToFront();
                 }
                 else
-                {
-                    GameStatus = Paused;
                     PannelInPause.Visible = true;
-                }
+                GameStatus = Paused;
             }
         }
         internal void Game_Resume(object sender, EventArgs e)
