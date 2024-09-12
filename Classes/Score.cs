@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,21 @@ namespace iMiner
         {
             Player = name; Result = score;
         }
+        
+        public static int SetResult(string time)
+        {
+            int EllapsedSeconds = 0;
 
+            if (Regex.IsMatch($"{time}", @"^\d{2}:\d{2}$"))
+            {
+                string[] parts = time.Split(":", StringSplitOptions.RemoveEmptyEntries);
+                int minutes = int.Parse(parts[0].Trim());
+                int sec = int.Parse(parts[1].Trim());
+                EllapsedSeconds = sec + minutes * 60;
+            }
+
+            return EllapsedSeconds;
+        }
         public static String GetResult(Score sc)
         {
             int sec = sc.Result / 60;

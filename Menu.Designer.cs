@@ -44,7 +44,6 @@ namespace iMiner
             this.menuRecords = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecShow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuRecImport = new System.Windows.Forms.ToolStripMenuItem();
             this.panControls = new System.Windows.Forms.Panel();
             this.btnHard = new System.Windows.Forms.Button();
             this.btnFame = new System.Windows.Forms.Button();
@@ -167,8 +166,7 @@ namespace iMiner
             // 
             this.menuRecords.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuRecShow,
-            this.menuRecExport,
-            this.menuRecImport});
+            this.menuRecExport});
             this.menuRecords.Name = "menuRecords";
             this.menuRecords.Size = new System.Drawing.Size(76, 24);
             this.menuRecords.Text = "Records";
@@ -177,7 +175,7 @@ namespace iMiner
             // 
             this.menuRecShow.Name = "menuRecShow";
             this.menuRecShow.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.menuRecShow.Size = new System.Drawing.Size(255, 26);
+            this.menuRecShow.Size = new System.Drawing.Size(306, 26);
             this.menuRecShow.Text = "Show Log";
             this.menuRecShow.Click += new System.EventHandler(this.ShowRecords);
             // 
@@ -186,18 +184,9 @@ namespace iMiner
             this.menuRecExport.Name = "menuRecExport";
             this.menuRecExport.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.R)));
-            this.menuRecExport.Size = new System.Drawing.Size(255, 26);
-            this.menuRecExport.Text = "Export Log";
-            this.menuRecExport.Click += new System.EventHandler(this.LogExport);
-            // 
-            // menuRecImport
-            // 
-            this.menuRecImport.Name = "menuRecImport";
-            this.menuRecImport.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.R)));
-            this.menuRecImport.Size = new System.Drawing.Size(255, 26);
-            this.menuRecImport.Text = "Import Log";
-            this.menuRecImport.Click += new System.EventHandler(this.LogImport);
+            this.menuRecExport.Size = new System.Drawing.Size(306, 26);
+            this.menuRecExport.Text = "Log Export/Import";
+            this.menuRecExport.Click += new System.EventHandler(this.Log_Export_Import);
             // 
             // panControls
             // 
@@ -336,7 +325,6 @@ namespace iMiner
         private System.Windows.Forms.ToolStripMenuItem menuRecords;
         private System.Windows.Forms.ToolStripMenuItem menuRecShow;
         private System.Windows.Forms.ToolStripMenuItem menuRecExport;
-        private System.Windows.Forms.ToolStripMenuItem menuRecImport;
 
         private System.Windows.Forms.Panel panControls;
         private System.Windows.Forms.Label lbClose;

@@ -13,33 +13,35 @@ namespace iMiner
     public partial class Menu : Form
     {
         static readonly String AppTitle = "iMiner";
-        static readonly List<Score> RecordsEasy = new List<Score>(10);
-        static readonly List<Score> RecordsMedium = new List<Score>(10);
-        static readonly List<Score> RecordsHard = new List<Score>(10);
-        static int HiScore_Easy = 0, HiScore_Medium = 0, HiScore_Hard = 0;
+        internal static List<Score> RecordsEasy = new List<Score>(10);
+        internal static List<Score> RecordsMedium = new List<Score>(10);
+        internal static List<Score> RecordsHard = new List<Score>(10);
+        internal static int HiScore_Easy = 0, HiScore_Medium = 0, HiScore_Hard = 0;
 
         internal static int GameMode = ModeMenu;
-        internal const int ModeMenu = 0, ModeEasy = 1, ModeMedium = 2, ModeHard = 3, ModeRecords = 4;
+        internal const int ModeMenu = 0, ModeEasy = 1, ModeMedium = 2, ModeHard = 3, ModeRecords = 4, ModeLogData = 5;
 
         PictureBox pbLogo;
+        LogExporter gameLog;
         GameField gameField = new GameField();
 
         public Menu()
         {
             InitializeComponent();
             HomeLogoLoad();
+            gameLog = new LogExporter(this);
             AddRecordToList(ModeEasy, new Score("Clery", 500));
             AddRecordToList(ModeEasy, new Score("Sasha", 400));
             AddRecordToList(ModeEasy, new Score("Lila", 300));
             AddRecordToList(ModeEasy, new Score("Misha", 200));
             AddRecordToList(ModeEasy, new Score("Clear", 110));
             AddRecordToList(ModeEasy, new Score("Samanta", 10));
-            
+
             AddRecordToList(ModeMedium, new Score("Sasha", 400));
             AddRecordToList(ModeMedium, new Score("Misha", 200));
             AddRecordToList(ModeMedium, new Score("Martina", 100));
             AddRecordToList(ModeMedium, new Score("Samanta", 10));
-            
+
             AddRecordToList(ModeHard, new Score("Clear", 500));
             AddRecordToList(ModeHard, new Score("Lila", 300));
         }
@@ -187,7 +189,10 @@ namespace iMiner
         }
         private void PauseGame(object sender, EventArgs e)
         {
-            gameField.Game_Pause(sender, e);
+            if (gameField.GameStatus == GameField.Paused)
+                gameField.Game_Resume(sender, e);
+            else
+                gameField.Game_Pause(sender, e);
         }
         private void ShowRecords(object sender, EventArgs e)
         {
@@ -244,38 +249,17 @@ namespace iMiner
 
             return lvRecords;
         }
-        private void LogExport(object sender, EventArgs e)
+        private void Log_Export_Import(object sender, EventArgs e)
         {
-            ToolStripMenuItem tsOption = (ToolStripMenuItem)sender;
+            if (!doExitRunningGame()) return;
+            gameLog.Location = new Point((panControls.Width - gameLog.Width) / 2, 0);
+            gameLog.GetActualLogData(null, null);
 
-            Clipboard.SetText("No data still!"); // To-do
-            if (tsOption.Text != "Exit")
-                MessageBox.Show("The data is in your clipboard!", "Export done");
-            else
-            {
-                MessageBox.Show("The data is in your clipboard!\nWish you all the best!", "Export done");
-                this.Close();
-            }
-        }
-        private void LogImport(object sender, EventArgs e)
-        {
-            bool isValidData = false;
-            DialogResult result = MessageBox.Show("Please, coppy the data you want to import,\nthen click \"Ok\"",
-                "Importing", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-            if (result == DialogResult.OK)
-            {
-                // To-do: isValidData logic for true
-
-                if (isValidData)
-                    MessageBox.Show(Clipboard.GetText(), "Ready!");
-                else
-                {
-                    result = MessageBox.Show("No proper data!", "Error occured",
-                        MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                    if (result == DialogResult.Retry)
-                        LogImport(sender, e);
-                }
-            }
+            lbClose.Visible = true;
+            GameMode = ModeLogData;
+            panControls.Controls.Clear();
+            panControls.Controls.Add(gameLog);
+            this.Text = AppTitle + " - Log Exporter";
         }
 
         // Menu Events
@@ -298,7 +282,7 @@ namespace iMiner
                 "Export log", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
             {
                 case DialogResult.Yes:
-                    LogExport(sender, e);
+                    Log_Export_Import(sender, e);
                     return;
                 case DialogResult.Cancel:
                     ReturnToHome(sender, e);
