@@ -48,7 +48,6 @@ namespace iMiner
             this.panControls = new System.Windows.Forms.Panel();
             this.lbClose = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
-            this.panControls.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -216,7 +215,7 @@ namespace iMiner
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.MinimumSize = new System.Drawing.Size(996, 899);
+            this.MinimumSize = new System.Drawing.Size(1014, 946);
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "iMiner";
@@ -224,7 +223,6 @@ namespace iMiner
             this.ClientSizeChanged += new System.EventHandler(this.Menu_Resize);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.panControls.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

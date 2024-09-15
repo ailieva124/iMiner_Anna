@@ -109,6 +109,8 @@ namespace iMiner
             this.Controls.Add(this.lbVersion);
             this.Controls.Add(this.lbTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "About";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

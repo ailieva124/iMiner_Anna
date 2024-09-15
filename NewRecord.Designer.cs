@@ -78,7 +78,10 @@ namespace iMiner
             this.Controls.Add(this.lbInfo);
             this.Controls.Add(this.tbNameInput);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "NewRecord";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.On_Close);
             this.Load += new System.EventHandler(this.On_Load);

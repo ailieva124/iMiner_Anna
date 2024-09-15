@@ -12,16 +12,16 @@ namespace iMiner
 {
     public partial class GameField : UserControl
     {
-        private const int WinGame = 1, LooseGame = 0;
+        const int WinGame = 1, LooseGame = 0;
         internal const int NotStarted = 0, Running = 1, Paused = 2, Ended = -1;
 
-        private readonly Field Fields;
-        private readonly PictureBox[,] Grid;
-        private Panel PannelInPause;
-        private Menu MenuWnd;
+        readonly Field Fields;
+        readonly PictureBox[,] Grid;
+        Panel PannelInPause;
+        Menu MenuWnd;
 
+        int ElapsedSeconds, hintsUsed;
         internal int GameStatus = NotStarted;
-        private int ElapsedSeconds;
 
         public GameField(Menu menu)
         {
@@ -60,6 +60,7 @@ namespace iMiner
 
         private void GetHint(object sender, EventArgs e)
         {
+            if (hintsUsed >= 3) return;
             Random rand = new Random();
             do
             {
@@ -83,6 +84,7 @@ namespace iMiner
                         Fields.Discovered.Add(x * Grid.GetLength(1) + y);
                         if (Fields.IsWin())
                             EndGame(WinGame);
+                        hintsUsed++;
                         break;
                     }
                     else

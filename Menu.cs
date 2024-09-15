@@ -184,8 +184,11 @@ namespace iMiner
         }
         private void About_iMiner(object sender, EventArgs e)
         {
+            if(gameField.GameStatus == GameField.Running)
+                gameField.Game_Pause(sender, e);
             About info = new About();
             info.ShowDialog();
+            gameField.Game_Resume(sender, e);
         }
         private void NewGame(object sender, EventArgs e)
         {
