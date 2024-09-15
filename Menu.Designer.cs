@@ -32,8 +32,8 @@ namespace iMiner
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuHome = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuHome = new System.Windows.Forms.ToolStripMenuItem();
             this.menuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.menuGame = new System.Windows.Forms.ToolStripMenuItem();
             this.menuNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,20 +68,12 @@ namespace iMiner
             // menuFile
             // 
             this.menuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuHome,
             this.menuAbout,
+            this.menuHome,
             this.menuExit});
             this.menuFile.Name = "menuFile";
             this.menuFile.Size = new System.Drawing.Size(46, 24);
             this.menuFile.Text = "File";
-            // 
-            // menuHome
-            // 
-            this.menuHome.Name = "menuHome";
-            this.menuHome.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.menuHome.Size = new System.Drawing.Size(203, 26);
-            this.menuHome.Text = "Home";
-            this.menuHome.Click += new System.EventHandler(this.ReturnToHome);
             // 
             // menuAbout
             // 
@@ -90,6 +82,14 @@ namespace iMiner
             this.menuAbout.Size = new System.Drawing.Size(203, 26);
             this.menuAbout.Text = "About iMiner";
             this.menuAbout.Click += new System.EventHandler(this.About_iMiner);
+            // 
+            // menuHome
+            // 
+            this.menuHome.Name = "menuHome";
+            this.menuHome.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.menuHome.Size = new System.Drawing.Size(203, 26);
+            this.menuHome.Text = "Home";
+            this.menuHome.Click += new System.EventHandler(this.ReturnToHome);
             // 
             // menuExit
             // 

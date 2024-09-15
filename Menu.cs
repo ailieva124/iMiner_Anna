@@ -36,7 +36,7 @@ namespace iMiner
             gallery = new GamePlayGallery(this);
             gameField = new GameField(this);
         }
-
+        
         private void HomeScreenLoad()
         {
             pbLogo = new PictureBox()
@@ -120,6 +120,7 @@ namespace iMiner
                 listScores.Add(askForName.playerRecord);
                 if (listScores.Count > 1)
                     listScores.Sort(delegate (Record c1, Record c2) { return c1.Result.CompareTo(c2.Result); });
+                gameLog.doAskForExport = true;
             }
 
             return doAdd;
@@ -185,11 +186,6 @@ namespace iMiner
         {
             About info = new About();
             info.ShowDialog();
-        }
-        private void Exit_iMiner(object sender, EventArgs e)
-        {
-            if (!doExitRunningGame()) return;
-            this.Close(); // Menu_Closing is asking for Log Export
         }
         private void NewGame(object sender, EventArgs e)
         {
@@ -311,12 +307,21 @@ namespace iMiner
             CenterX_PanControls(gameLog);
             gameLog.GetActualLogData(null, null);
 
-            lbClose.Visible = true;
-            GameMode = ModeLogData;
-            panControls.Controls.Clear();
-            panControls.Controls.Add(gameLog);
-            this.Text = AppTitle + " - Log Exporter";
+            if (gameLog.doExit)
+            {
+                gameLog.Copy(sender, e);
+                MessageBox.Show("The data is in your clipboard!", "Export done!");
+            }
+            else
+            {
+                lbClose.Visible = true;
+                GameMode = ModeLogData;
+                panControls.Controls.Clear();
+                panControls.Controls.Add(gameLog);
+                this.Text = AppTitle + " - Log Exporter";
+            }
         }
+        private void Exit_iMiner(object sender, EventArgs e) => this.Close();
 
         // Menu Events
         private void Menu_Resize(object sender, EventArgs e)
@@ -346,10 +351,12 @@ namespace iMiner
                 e.Cancel = true;
                 return;
             }
+            if (!gameLog.doAskForExport) return;
             switch (MessageBox.Show("To prevent loosing all of your data\nwhould you like to export the records log?",
                 "Export log", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
             {
                 case DialogResult.Yes:
+                    gameLog.doExit = true;
                     Log_Export_Import(sender, e);
                     return;
                 case DialogResult.Cancel:

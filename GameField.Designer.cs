@@ -167,6 +167,7 @@ namespace iMiner
             this.Controls.Add(this.panFields);
             this.Name = "GameField";
             this.Size = new System.Drawing.Size(514, 457);
+            this.Leave += new System.EventHandler(this.GameField_Leave);
             ((System.ComponentModel.ISupportInitialize)(this.pbBomb)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbHelper)).EndInit();

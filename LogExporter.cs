@@ -12,8 +12,9 @@ namespace iMiner
 {
     public partial class LogExporter : UserControl
     {
-        private Menu MenuWnd;
-        private StringBuilder LogData;
+        Menu MenuWnd;
+        StringBuilder LogData;
+        public bool doExit, doAskForExport;
         bool isDataTheSame, isCheckedForSameData;
         static string EmptyHolder = "<<Empty>>";
         static string MsgsNo = "No messages", ErrorsNo = "No errors",
@@ -24,9 +25,6 @@ namespace iMiner
         {
             InitializeComponent();
             MenuWnd = menu;
-            tbData.Text = $"Best Scores:\n" +
-                $"Easy: 00:00\nMedium: 00:00\nHard: 00:00\n" +
-                $"Records:\n{EmptyHolder}";
         }
 
         // Load Data
@@ -63,7 +61,7 @@ namespace iMiner
         }
 
         // Buttons
-        private void Copy(object sender, EventArgs e) => Clipboard.SetText(tbData.Text);
+        public void Copy(object sender, EventArgs e) => Clipboard.SetText(tbData.Text);
         private void Paste(object sender, EventArgs e)
         {
             tbData.Text = Clipboard.GetText();
@@ -84,6 +82,7 @@ namespace iMiner
                     Menu.RecordsHard = hard;
                     lbMessages.Text = MsgDataUpdated;
                     lbError.Text = ErrorsNo;
+                    doAskForExport = true;
                 }
                 else
                 {
@@ -150,11 +149,7 @@ namespace iMiner
             int EllapsedSeconds = 0;
             string[] parts = line.Split(": ");
             if (parts.Length == 2 && parts[0].Trim() == level)
-            {
                 EllapsedSeconds = Record.SetResult(parts[1].Trim());
-                if (EllapsedSeconds == 0)
-                    hasFailed = true;
-            }
             return EllapsedSeconds;
         }
         private List<Record> GetListScores(string difficulty, string[] lines, int best, ref int index, out bool hasFailed)
