@@ -61,7 +61,7 @@ namespace iMiner
             // 
             // pbBomb
             // 
-            this.pbBomb.Image = global::iMiner.Properties.Resources.mine;
+            this.pbBomb.Image = global::iMiner.Properties.Resources.flag;
             this.pbBomb.Location = new System.Drawing.Point(112, 16);
             this.pbBomb.Name = "pbBomb";
             this.pbBomb.Size = new System.Drawing.Size(38, 35);

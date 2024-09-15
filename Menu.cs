@@ -13,94 +13,116 @@ namespace iMiner
     public partial class Menu : Form
     {
         static readonly String AppTitle = "iMiner";
-        internal static List<Score> RecordsEasy = new List<Score>(10);
-        internal static List<Score> RecordsMedium = new List<Score>(10);
-        internal static List<Score> RecordsHard = new List<Score>(10);
+        internal static List<Record> RecordsEasy = new List<Record>(10);
+        internal static List<Record> RecordsMedium = new List<Record>(10);
+        internal static List<Record> RecordsHard = new List<Record>(10);
         internal static int HiScore_Easy = 0, HiScore_Medium = 0, HiScore_Hard = 0;
 
         internal static int GameMode = ModeMenu;
-        internal const int ModeMenu = 0, ModeEasy = 1, ModeMedium = 2, ModeHard = 3, ModeRecords = 4, ModeLogData = 5;
+        internal const int ModeMenu = 0, ModeEasy = 1, ModeMedium = 2, ModeHard = 3, ModeRecords = 4, ModeLogData = 5, ModeGameplay = 6;
 
         PictureBox pbLogo;
+        Button btnEasy, btnMedium, btnHard, btnRecords;
+
+        GamePlayGallery gallery;
         LogExporter gameLog;
-        GameField gameField = new GameField();
+        GameField gameField;
 
         public Menu()
         {
             InitializeComponent();
-            HomeLogoLoad();
+            HomeScreenLoad();
             gameLog = new LogExporter(this);
-            AddRecordToList(ModeEasy, new Score("Clery", 500));
-            AddRecordToList(ModeEasy, new Score("Sasha", 400));
-            AddRecordToList(ModeEasy, new Score("Lila", 300));
-            AddRecordToList(ModeEasy, new Score("Misha", 200));
-            AddRecordToList(ModeEasy, new Score("Clear", 110));
-            AddRecordToList(ModeEasy, new Score("Samanta", 10));
-
-            AddRecordToList(ModeMedium, new Score("Sasha", 400));
-            AddRecordToList(ModeMedium, new Score("Misha", 200));
-            AddRecordToList(ModeMedium, new Score("Martina", 100));
-            AddRecordToList(ModeMedium, new Score("Samanta", 10));
-
-            AddRecordToList(ModeHard, new Score("Clear", 500));
-            AddRecordToList(ModeHard, new Score("Lila", 300));
+            gallery = new GamePlayGallery(this);
+            gameField = new GameField(this);
         }
 
-        private void HomeLogoLoad()
+        private void HomeScreenLoad()
         {
             pbLogo = new PictureBox()
             {
                 BackgroundImageLayout = ImageLayout.None,
-                Image = Properties.Resources.logo,
-                Location = new Point(0, 0),
+                Image = Properties.Resources.logo_2,
                 Size = panControls.Size,
                 SizeMode = PictureBoxSizeMode.Zoom
             };
-            this.panControls.Controls.Add(pbLogo);
-        }
-        public static bool AddRecordToList(int levelType, Score newRecord)
-        {
-            bool isNewBestAdded = false;
-            int scoreInSeconds = newRecord.Result;
+            btnEasy = DrawHomeBtns("Easy", Color.Teal);
+            btnMedium = DrawHomeBtns("Medium", Color.Tomato);
+            btnHard = DrawHomeBtns("Hard", Color.MediumVioletRed);
+            btnRecords = DrawHomeBtns("Records", Color.SteelBlue);
 
+            int i = 0;
+            CenterX_PanControls((btnEasy), 256 + (90 * i++));
+            CenterX_PanControls((btnMedium), 256 + (90 * i++));
+            CenterX_PanControls((btnHard), 256 + (90 * i++));
+            CenterX_PanControls((btnRecords), 256 + (90 * i++));
+
+            panControls.Controls.Add(btnEasy);
+            panControls.Controls.Add(btnMedium);
+            panControls.Controls.Add(btnHard);
+            panControls.Controls.Add(btnRecords);
+            panControls.Controls.Add(pbLogo);
+        }
+        private Button DrawHomeBtns(string title, Color foreColor)
+        {
+
+            Button btn = new Button()
+            {
+                Text = title,
+                Name = $"btn{title}",
+                ForeColor = foreColor,
+                Cursor = Cursors.Hand,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = SystemColors.Info,
+                Size = new Size(246, 71),
+                ImeMode = ImeMode.NoControl,
+                UseVisualStyleBackColor = false,
+                BackgroundImageLayout = ImageLayout.None,
+                Font = new Font("Snap ITC", 13.8F, FontStyle.Regular, GraphicsUnit.Point)
+            };
+            btn.Click += new EventHandler(this.HomeBtns_Click);
+
+            return btn;
+        }
+        public bool AddRecordToList(int levelType, int newRecord)
+        {
             switch (levelType)
             {
                 case ModeEasy:
-                    if (HiScore_Easy == 0) HiScore_Easy = scoreInSeconds;
-                    if (scoreInSeconds <= HiScore_Easy)
-                    {
-                        RecordsEasy.Add(newRecord);
-                        if (RecordsEasy.Count > 1)
-                            RecordsEasy.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
-                        HiScore_Easy = scoreInSeconds;
-                        isNewBestAdded = true;
-                    }
-                    break;
+                    return AddRecord(newRecord, RecordsEasy, ref HiScore_Easy);
                 case ModeMedium:
-                    if (HiScore_Medium == 0) HiScore_Medium = scoreInSeconds;
-                    if (scoreInSeconds <= HiScore_Medium)
-                    {
-                        RecordsMedium.Add(newRecord);
-                        if (RecordsMedium.Count > 1)
-                            RecordsMedium.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
-                        HiScore_Medium = scoreInSeconds;
-                        isNewBestAdded = true;
-                    }
-                    break;
+                    return AddRecord(newRecord, RecordsMedium, ref HiScore_Medium);
                 case ModeHard:
-                    if (HiScore_Hard == 0) HiScore_Hard = scoreInSeconds;
-                    if (scoreInSeconds <= HiScore_Hard)
-                    {
-                        RecordsHard.Add(newRecord);
-                        if (RecordsHard.Count > 1)
-                            RecordsHard.Sort(delegate (Score c1, Score c2) { return c1.Result.CompareTo(c2.Result); });
-                        HiScore_Hard = scoreInSeconds;
-                        isNewBestAdded = true;
-                    }
-                    break;
+                    return AddRecord(newRecord, RecordsHard, ref HiScore_Hard);
+                default:
+                    return false;
+            }
+        }
+        public bool AddRecord(int newScore, List<Record> listScores, ref int bestScore)
+        {
+            NewRecord askForName = new NewRecord();
+            bool doAdd = false;
+
+            if (bestScore == 0)
+            {
+                askForName.isFirstRecord = true;
+                if (askForName.ShowDialog() == DialogResult.OK)
+                    doAdd = true;
+            }
+            else if (newScore < bestScore)
+                if (askForName.ShowDialog() == DialogResult.OK)
+                    doAdd = true;
+
+            if (doAdd)
+            {
+                bestScore = newScore;
+                askForName.Score = newScore;
+                listScores.Add(askForName.playerRecord);
+                if (listScores.Count > 1)
+                    listScores.Sort(delegate (Record c1, Record c2) { return c1.Result.CompareTo(c2.Result); });
             }
 
-            return isNewBestAdded;
+            return doAdd;
         }
         private bool doExitRunningGame(string msgTitle = "Exit")
         {
@@ -122,6 +144,29 @@ namespace iMiner
             }
             return true; // Game is ended or not started
         }
+        private void CenterX_PanControls(object control, int right = 0)
+        {
+            Control c = (Control)control;
+            int x = (panControls.Width - c.Width) / 2;
+            if (right != 0)
+                x += 350;
+            c.Location = new Point(x, right);
+        }
+        private void HomeBtns_Click(object sender, EventArgs e)
+        {
+            Button levelType = (Button)sender;
+            switch (levelType.Text)
+            {
+                case "Easy":
+                case "Medium":
+                case "Hard":
+                    NewGame_InitialiseWindow(levelType.Text);
+                    break;
+                case "Records":
+                    ShowRecords(sender, e);
+                    break;
+            }
+        }
 
         // MenuStrip Events
         private void ReturnToHome(object sender, EventArgs e)
@@ -130,7 +175,7 @@ namespace iMiner
             {
                 if (!doExitRunningGame()) return;
                 panControls.Controls.Clear();
-                HomeLogoLoad();
+                HomeScreenLoad();
                 lbClose.Visible = false;
                 GameMode = ModeMenu;
                 this.Text = AppTitle;
@@ -146,14 +191,18 @@ namespace iMiner
             if (!doExitRunningGame()) return;
             this.Close(); // Menu_Closing is asking for Log Export
         }
-        private void StartGame(object sender, EventArgs e)
+        private void NewGame(object sender, EventArgs e)
         {
             ToolStripMenuItem tsOption = (ToolStripMenuItem)sender;
             
             if(!doExitRunningGame("New game")) return;
-
+            NewGame_InitialiseWindow(tsOption.Text);
+            
+        }
+        private void NewGame_InitialiseWindow(string difficulty)
+        {
             int row = 0, col = 0, bombs = 0, bestScore = 0;
-            switch (tsOption.Text)
+            switch (difficulty)
             {
                 case "Easy":
                     GameMode = ModeEasy;
@@ -175,17 +224,24 @@ namespace iMiner
                     break;
             }
             int size = Math.Min(40, 1000 / Math.Max(row, col));
-            gameField = new GameField(row, col, bombs, size, Score.GetResult(bestScore));
-            gameField.Location = new Point((panControls.Width - gameField.Width) / 2, 0);
+            gameField = new GameField(this, row, col, bombs, size, Record.GetResult(bestScore));
+            CenterX_PanControls(gameField);
 
             lbClose.Visible = true;
             panControls.Controls.Clear();
             panControls.Controls.Add(gameField);
-            this.Text = AppTitle + " - " + tsOption.Text;
+            this.Text = AppTitle + " - " + difficulty;
         }
         private void GamePlayInfo(object sender, EventArgs e)
         {
-            // To-do
+            if (!doExitRunningGame()) return;
+
+            GameMode = ModeGameplay;
+            lbClose.Visible = true;
+            CenterX_PanControls(gallery);
+            panControls.Controls.Clear();
+            panControls.Controls.Add(gallery);
+            this.Text = AppTitle + " - Gameplay";
         }
         private void PauseGame(object sender, EventArgs e)
         {
@@ -220,7 +276,7 @@ namespace iMiner
             panControls.Controls.Add(tcRecords);
             this.Text = AppTitle + " - Records";
         }
-        public ListView SetListView(List<Score> listData)
+        public ListView SetListView(List<Record> listData)
         {
             ListView lvRecords = new ListView
             {
@@ -242,8 +298,8 @@ namespace iMiner
             ListViewItem[] lvItems = new ListViewItem[listData.Count];
             for (int i = 0; i < listData.Count; i++)
             {
-                Score record = listData.ElementAt(i);
-                lvItems[i] = new ListViewItem(new string[] { "#" + (i + 1), record.Player, Score.GetResult(record) });
+                Record record = listData.ElementAt(i);
+                lvItems[i] = new ListViewItem(new string[] { "#" + (i + 1), record.plName, Record.GetResult(record) });
             }
             lvRecords.Items.AddRange(lvItems);
 
@@ -252,7 +308,7 @@ namespace iMiner
         private void Log_Export_Import(object sender, EventArgs e)
         {
             if (!doExitRunningGame()) return;
-            gameLog.Location = new Point((panControls.Width - gameLog.Width) / 2, 0);
+            CenterX_PanControls(gameLog);
             gameLog.GetActualLogData(null, null);
 
             lbClose.Visible = true;
@@ -266,9 +322,21 @@ namespace iMiner
         private void Menu_Resize(object sender, EventArgs e)
         {
             if (GameMode == ModeMenu)
-                pbLogo.Size = panControls.Size;
+            {
+                CenterX_PanControls(pbLogo);
+                int i = 0;
+                CenterX_PanControls((btnEasy), 256 + (90 * i++));
+                CenterX_PanControls((btnMedium), 256 + (90 * i++));
+                CenterX_PanControls((btnHard), 256 + (90 * i++));
+                CenterX_PanControls((btnRecords), 256 + (90 * i++));
+            }
             else if (GameMode == ModeEasy || GameMode == ModeMedium || GameMode == ModeHard)
-                gameField.Location = new Point((panControls.Width - gameField.Width) / 2, 0);
+                CenterX_PanControls(gameField);
+            else if (GameMode == ModeLogData)
+                CenterX_PanControls(gameLog);
+            else if (GameMode == ModeGameplay)
+                CenterX_PanControls(gallery);
+
             lbClose.Location = new Point(this.Width - 55, 5);
         }
         private void Menu_Closing(object sender, FormClosingEventArgs e)

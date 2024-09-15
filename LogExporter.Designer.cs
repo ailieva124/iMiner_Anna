@@ -166,7 +166,5 @@ namespace iMiner
         private System.Windows.Forms.Label lbError;
         private System.Windows.Forms.Label lbMessages;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.GroupBox gbErrors;
-        private System.Windows.Forms.GroupBox gbMessages;
     }
 }

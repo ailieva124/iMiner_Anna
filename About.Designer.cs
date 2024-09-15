@@ -110,6 +110,8 @@ namespace iMiner
             this.Controls.Add(this.lbTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "About";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About iMiner";
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.AboutEscape);

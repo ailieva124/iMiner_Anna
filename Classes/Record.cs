@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace iMiner
 {
-    public class Score
+    public class Record
     {
-        public String Player;
+        public String plName = "";
         public int Result;
 
-        public Score(string name, int score)
+        public Record() { }
+
+        public Record(string name, int score)
         {
-            Player = name; Result = score;
+            plName = name; Result = score;
         }
         
         public static int SetResult(string time)
@@ -31,7 +33,7 @@ namespace iMiner
 
             return EllapsedSeconds;
         }
-        public static String GetResult(Score sc)
+        public static String GetResult(Record sc)
         {
             int sec = sc.Result / 60;
             int min = sc.Result % 60;

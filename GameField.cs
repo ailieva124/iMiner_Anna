@@ -18,12 +18,17 @@ namespace iMiner
         private readonly Field Fields;
         private readonly PictureBox[,] Grid;
         private Panel PannelInPause;
+        private Menu MenuWnd;
 
         internal int GameStatus = NotStarted;
         private int ElapsedSeconds;
 
-        public GameField() => InitializeComponent();
-        public GameField(int row, int col, int mines, int size, String bestScore) : this()
+        public GameField(Menu menu)
+        {
+            InitializeComponent();
+            MenuWnd = menu;
+        }
+        public GameField(Menu menu, int row, int col, int mines, int size, String bestScore) : this(menu)
         {
             lbBombs.Text = mines.ToString();
             lbBest.Text = $"Best: {bestScore}";
@@ -164,7 +169,7 @@ namespace iMiner
                     else
                     {
                         pb.BackColor = Color.Green;
-                        pb.Image = Properties.Resources.mine;
+                        pb.Image = Properties.Resources.flag;
                         Fields.Flagged.Add(pbX * Grid.GetLength(1) + pbY);
                         lbBombs.Text = (int.Parse(lbBombs.Text) - 1).ToString();
                         if (int.Parse(lbBombs.Text) < 0)
@@ -243,9 +248,9 @@ namespace iMiner
             tClock.Stop();
             if (exitCode == WinGame)
             {
-                if(Menu.AddRecordToList(Menu.GameMode, new Score("Player1", ElapsedSeconds)))
-                    this.lbBest.Text = $"Best: {Score.GetResult(ElapsedSeconds)}";
-                MessageBox.Show("You discovered all safe squares!", "Victory");
+                if(MenuWnd.AddRecordToList(Menu.GameMode, ElapsedSeconds))
+                    this.lbBest.Text = $"Best: {Record.GetResult(ElapsedSeconds)}";
+                //MessageBox.Show("You discovered all safe squares!", "Victory");
             }
             else
             {

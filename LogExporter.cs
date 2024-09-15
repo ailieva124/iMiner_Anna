@@ -39,9 +39,9 @@ namespace iMiner
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("Best Scores:");
             builder.AppendLine("========");
-            builder.AppendLine($"Easy: {Score.GetResult(Menu.HiScore_Easy)}");
-            builder.AppendLine($"Medium: {Score.GetResult(Menu.HiScore_Medium)}");
-            builder.AppendLine($"Hard: {Score.GetResult(Menu.HiScore_Hard)}");
+            builder.AppendLine($"Easy: {Record.GetResult(Menu.HiScore_Easy)}");
+            builder.AppendLine($"Medium: {Record.GetResult(Menu.HiScore_Medium)}");
+            builder.AppendLine($"Hard: {Record.GetResult(Menu.HiScore_Hard)}");
             builder.AppendLine();
             builder.AppendLine("Records:");
             builder.AppendLine("========");
@@ -52,14 +52,14 @@ namespace iMiner
             LogData = builder;
             tbData.Text = LogData.ToString();
         }
-        private static void AppendRecords(string title, List<Score> records, StringBuilder builder)
+        private static void AppendRecords(string title, List<Record> records, StringBuilder builder)
         {
             builder.AppendLine($"{title}:");
             if (records.Count == 0)
                 builder.AppendLine($"   {EmptyHolder}");
             else
-                foreach (Score record in records)
-                    builder.AppendLine($" * {record.Player} - {Score.GetResult(record.Result)}");
+                foreach (Record record in records)
+                    builder.AppendLine($" * {record.plName} - {Record.GetResult(record.Result)}");
         }
 
         // Buttons
@@ -74,7 +74,7 @@ namespace iMiner
             if (!isCheckedForSameData) CheckForSameData();
             if (!isDataTheSame)
             {
-                if (ValidateData(out int bestEasy, out int bestMedium, out int bestHard, out List<Score> easy, out List<Score> medium, out List<Score> hard))
+                if (ValidateData(out int bestEasy, out int bestMedium, out int bestHard, out List<Record> easy, out List<Record> medium, out List<Record> hard))
                 {
                     Menu.HiScore_Easy = bestEasy;
                     Menu.HiScore_Medium = bestMedium;
@@ -109,10 +109,10 @@ namespace iMiner
             }
             isCheckedForSameData = true;
         }
-        private bool ValidateData(out int bestEasy, out int bestMedium, out int bestHard, out List<Score> easy, out List<Score> medium, out List<Score> hard)
+        private bool ValidateData(out int bestEasy, out int bestMedium, out int bestHard, out List<Record> easy, out List<Record> medium, out List<Record> hard)
         {
             bool hasFailed = false; int checkIndex = 0, refIndex = 7;
-            bestEasy = 0; bestMedium = 0; bestHard = 0; easy = new List<Score>(); medium = easy; hard = easy;
+            bestEasy = 0; bestMedium = 0; bestHard = 0; easy = new List<Record>(); medium = easy; hard = easy;
             string[] lines = LogData.ToString().Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             do
             {
@@ -151,16 +151,16 @@ namespace iMiner
             string[] parts = line.Split(": ");
             if (parts.Length == 2 && parts[0].Trim() == level)
             {
-                EllapsedSeconds = Score.SetResult(parts[1].Trim());
+                EllapsedSeconds = Record.SetResult(parts[1].Trim());
                 if (EllapsedSeconds == 0)
                     hasFailed = true;
             }
             return EllapsedSeconds;
         }
-        private List<Score> GetListScores(string difficulty, string[] lines, int best, ref int index, out bool hasFailed)
+        private List<Record> GetListScores(string difficulty, string[] lines, int best, ref int index, out bool hasFailed)
         {
             hasFailed = false;
-            List<Score> records = new List<Score>();
+            List<Record> records = new List<Record>();
 
             if (index < lines.Length - 1 && lines[index] == $"{difficulty}:") index++;
             if (lines[index].Contains(EmptyHolder) || lines[index].Equals("")) return records;
@@ -168,7 +168,7 @@ namespace iMiner
             {
                 string[] parts = lines[index++].Substring(3).Split('-', StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 2)
-                    records.Add(new Score(parts[0].Trim(), Score.SetResult(parts[1].Trim())));
+                    records.Add(new Record(parts[0].Trim(), Record.SetResult(parts[1].Trim())));
             }
             if (best != 0 && records.Count == 0) hasFailed = true;
 

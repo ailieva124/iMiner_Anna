@@ -29,6 +29,7 @@ namespace iMiner
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHome = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,10 +46,6 @@ namespace iMiner
             this.menuRecShow = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRecExport = new System.Windows.Forms.ToolStripMenuItem();
             this.panControls = new System.Windows.Forms.Panel();
-            this.btnHard = new System.Windows.Forms.Button();
-            this.btnFame = new System.Windows.Forms.Button();
-            this.btnMedium = new System.Windows.Forms.Button();
-            this.btnEasy = new System.Windows.Forms.Button();
             this.lbClose = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.panControls.SuspendLayout();
@@ -89,7 +86,7 @@ namespace iMiner
             // menuAbout
             // 
             this.menuAbout.Name = "menuAbout";
-            this.menuAbout.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.menuAbout.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.menuAbout.Size = new System.Drawing.Size(203, 26);
             this.menuAbout.Text = "About iMiner";
             this.menuAbout.Click += new System.EventHandler(this.About_iMiner);
@@ -119,7 +116,7 @@ namespace iMiner
             this.menuMedium,
             this.menuHard});
             this.menuNew.Name = "menuNew";
-            this.menuNew.Size = new System.Drawing.Size(218, 26);
+            this.menuNew.Size = new System.Drawing.Size(222, 26);
             this.menuNew.Text = "New Game";
             // 
             // menuEasy
@@ -128,7 +125,7 @@ namespace iMiner
             this.menuEasy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.menuEasy.Size = new System.Drawing.Size(202, 26);
             this.menuEasy.Text = "Easy";
-            this.menuEasy.Click += new System.EventHandler(this.StartGame);
+            this.menuEasy.Click += new System.EventHandler(this.NewGame);
             // 
             // menuMedium
             // 
@@ -136,7 +133,7 @@ namespace iMiner
             this.menuMedium.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
             this.menuMedium.Size = new System.Drawing.Size(202, 26);
             this.menuMedium.Text = "Medium";
-            this.menuMedium.Click += new System.EventHandler(this.StartGame);
+            this.menuMedium.Click += new System.EventHandler(this.NewGame);
             // 
             // menuHard
             // 
@@ -144,21 +141,21 @@ namespace iMiner
             this.menuHard.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
             this.menuHard.Size = new System.Drawing.Size(202, 26);
             this.menuHard.Text = "Hard";
-            this.menuHard.Click += new System.EventHandler(this.StartGame);
+            this.menuHard.Click += new System.EventHandler(this.NewGame);
             // 
             // menuPause
             // 
             this.menuPause.Name = "menuPause";
             this.menuPause.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.menuPause.Size = new System.Drawing.Size(218, 26);
-            this.menuPause.Text = "Pause";
+            this.menuPause.Size = new System.Drawing.Size(222, 26);
+            this.menuPause.Text = "Pause Game";
             this.menuPause.Click += new System.EventHandler(this.PauseGame);
             // 
             // menuGamePlay
             // 
             this.menuGamePlay.Name = "menuGamePlay";
-            this.menuGamePlay.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.menuGamePlay.Size = new System.Drawing.Size(218, 26);
+            this.menuGamePlay.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.menuGamePlay.Size = new System.Drawing.Size(222, 26);
             this.menuGamePlay.Text = "GamePlay";
             this.menuGamePlay.Click += new System.EventHandler(this.GamePlayInfo);
             // 
@@ -190,83 +187,11 @@ namespace iMiner
             // 
             // panControls
             // 
-            this.panControls.Controls.Add(this.btnHard);
-            this.panControls.Controls.Add(this.btnFame);
-            this.panControls.Controls.Add(this.btnMedium);
-            this.panControls.Controls.Add(this.btnEasy);
             this.panControls.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panControls.Location = new System.Drawing.Point(0, 28);
             this.panControls.Name = "panControls";
             this.panControls.Size = new System.Drawing.Size(996, 871);
             this.panControls.TabIndex = 2;
-            // 
-            // btnHard
-            // 
-            this.btnHard.BackColor = System.Drawing.SystemColors.Info;
-            this.btnHard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnHard.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHard.Font = new System.Drawing.Font("Snap ITC", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnHard.ForeColor = System.Drawing.Color.MediumVioletRed;
-            this.btnHard.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnHard.Location = new System.Drawing.Point(339, 451);
-            this.btnHard.Name = "btnHard";
-            this.btnHard.Size = new System.Drawing.Size(324, 71);
-            this.btnHard.TabIndex = 7;
-            this.btnHard.Text = "Hard";
-            this.btnHard.UseVisualStyleBackColor = false;
-            this.btnHard.Visible = false;
-            // 
-            // btnFame
-            // 
-            this.btnFame.BackColor = System.Drawing.SystemColors.Info;
-            this.btnFame.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnFame.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFame.Font = new System.Drawing.Font("Snap ITC", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnFame.ForeColor = System.Drawing.Color.SteelBlue;
-            this.btnFame.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnFame.Location = new System.Drawing.Point(340, 525);
-            this.btnFame.Name = "btnFame";
-            this.btnFame.Size = new System.Drawing.Size(324, 71);
-            this.btnFame.TabIndex = 8;
-            this.btnFame.Text = "Records";
-            this.btnFame.UseVisualStyleBackColor = false;
-            this.btnFame.Visible = false;
-            // 
-            // btnMedium
-            // 
-            this.btnMedium.BackColor = System.Drawing.SystemColors.Info;
-            this.btnMedium.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnMedium.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMedium.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnMedium.Font = new System.Drawing.Font("Snap ITC", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnMedium.ForeColor = System.Drawing.Color.Tomato;
-            this.btnMedium.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnMedium.Location = new System.Drawing.Point(339, 378);
-            this.btnMedium.Name = "btnMedium";
-            this.btnMedium.Size = new System.Drawing.Size(324, 71);
-            this.btnMedium.TabIndex = 6;
-            this.btnMedium.Text = "Medium";
-            this.btnMedium.UseVisualStyleBackColor = false;
-            this.btnMedium.Visible = false;
-            // 
-            // btnEasy
-            // 
-            this.btnEasy.BackColor = System.Drawing.SystemColors.Info;
-            this.btnEasy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnEasy.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEasy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEasy.Font = new System.Drawing.Font("Snap ITC", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnEasy.ForeColor = System.Drawing.Color.Teal;
-            this.btnEasy.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnEasy.Location = new System.Drawing.Point(339, 305);
-            this.btnEasy.Name = "btnEasy";
-            this.btnEasy.Size = new System.Drawing.Size(324, 71);
-            this.btnEasy.TabIndex = 5;
-            this.btnEasy.Text = "Easy";
-            this.btnEasy.UseVisualStyleBackColor = false;
-            this.btnEasy.Visible = false;
             // 
             // lbClose
             // 
@@ -289,10 +214,10 @@ namespace iMiner
             this.Controls.Add(this.lbClose);
             this.Controls.Add(this.panControls);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.MinimumSize = new System.Drawing.Size(832, 525);
+            this.MinimumSize = new System.Drawing.Size(996, 899);
             this.Name = "Menu";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "iMiner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Menu_Closing);
@@ -328,10 +253,6 @@ namespace iMiner
 
         private System.Windows.Forms.Panel panControls;
         private System.Windows.Forms.Label lbClose;
-        private System.Windows.Forms.Button btnFame;
-        private System.Windows.Forms.Button btnEasy;
-        private System.Windows.Forms.Button btnHard;
-        private System.Windows.Forms.Button btnMedium;
     }
 }
 
