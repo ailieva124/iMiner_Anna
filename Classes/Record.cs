@@ -19,7 +19,7 @@ namespace iMiner
             plName = name; Result = score;
         }
         
-        public static int SetResult(string time)
+        public static int SetResult(string time, out bool hasFailed)
         {
             int EllapsedSeconds = 0;
 
@@ -29,7 +29,10 @@ namespace iMiner
                 int minutes = int.Parse(parts[0].Trim());
                 int sec = int.Parse(parts[1].Trim());
                 EllapsedSeconds = sec + minutes * 60;
+                hasFailed = false;
             }
+            else
+                hasFailed = true;
 
             return EllapsedSeconds;
         }

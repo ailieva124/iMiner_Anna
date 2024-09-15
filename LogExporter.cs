@@ -149,7 +149,7 @@ namespace iMiner
             int EllapsedSeconds = 0;
             string[] parts = line.Split(": ");
             if (parts.Length == 2 && parts[0].Trim() == level)
-                EllapsedSeconds = Record.SetResult(parts[1].Trim());
+                EllapsedSeconds = Record.SetResult(parts[1].Trim(), out hasFailed);
             return EllapsedSeconds;
         }
         private List<Record> GetListScores(string difficulty, string[] lines, int best, ref int index, out bool hasFailed)
@@ -159,13 +159,19 @@ namespace iMiner
 
             if (index < lines.Length - 1 && lines[index] == $"{difficulty}:") index++;
             if (lines[index].Contains(EmptyHolder) || lines[index].Equals("")) return records;
-            while (index < lines.Length && lines[index].StartsWith(" * "))
+            while (index < lines.Length && lines[index].StartsWith(" * ") && !hasFailed)
             {
                 string[] parts = lines[index++].Substring(3).Split('-', StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 2)
-                    records.Add(new Record(parts[0].Trim(), Record.SetResult(parts[1].Trim())));
+                    records.Add(new Record(parts[0].Trim(), Record.SetResult(parts[1].Trim(), out hasFailed)));
+                else
+                    hasFailed = true;
             }
-            if (best != 0 && records.Count == 0) hasFailed = true;
+            if (!hasFailed && (
+                (best != 0 && records.Count == 0) || 
+                (best == 0 && records.Count != 0)
+               ))
+                hasFailed = true;
 
             return records;
         }
