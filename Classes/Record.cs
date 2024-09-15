@@ -9,7 +9,7 @@ namespace iMiner
 {
     public class Record
     {
-        public String plName = "";
+        public string plName = "";
         public int Result;
 
         public Record() { }

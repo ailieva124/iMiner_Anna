@@ -12,7 +12,7 @@ namespace iMiner
 {
     public partial class Menu : Form
     {
-        static readonly String AppTitle = "iMiner";
+        static readonly string AppTitle = "iMiner";
         internal static List<Record> RecordsEasy = new List<Record>(10);
         internal static List<Record> RecordsMedium = new List<Record>(10);
         internal static List<Record> RecordsHard = new List<Record>(10);
@@ -36,7 +36,7 @@ namespace iMiner
             gallery = new GamePlayGallery(this);
             gameField = new GameField(this);
         }
-        
+
         private void HomeScreenLoad()
         {
             pbLogo = new PictureBox()
@@ -131,13 +131,13 @@ namespace iMiner
             bool modePaused = (gameField.GameStatus == GameField.Paused);
             if (modeRunning || modePaused)
             {
-                if(modeRunning)
+                if (modeRunning)
                     gameField.Game_Pause(null, null);
                 DialogResult question = MessageBox.Show("Game proccess will be lost!\nDo you want to continue?",
                     msgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (question == DialogResult.No)
                 {
-                    if(!modePaused) // if it was running, go back to running
+                    if (!modePaused) // if it was running, go back to running
                         gameField.Game_Resume(null, null);
                     return false; // Game still running
                 }
@@ -190,10 +190,10 @@ namespace iMiner
         private void NewGame(object sender, EventArgs e)
         {
             ToolStripMenuItem tsOption = (ToolStripMenuItem)sender;
-            
-            if(!doExitRunningGame("New game")) return;
+
+            if (!doExitRunningGame("New game")) return;
             NewGame_InitialiseWindow(tsOption.Text);
-            
+
         }
         private void NewGame_InitialiseWindow(string difficulty)
         {
@@ -249,7 +249,7 @@ namespace iMiner
         private void ShowRecords(object sender, EventArgs e)
         {
             if (GameMode == ModeRecords) return;
-            else if(!doExitRunningGame()) return;
+            else if (!doExitRunningGame()) return;
 
             GameMode = ModeRecords;
             lbClose.Visible = true;
@@ -272,7 +272,7 @@ namespace iMiner
             panControls.Controls.Add(tcRecords);
             this.Text = AppTitle + " - Records";
         }
-        public ListView SetListView(List<Record> listData)
+        public static ListView SetListView(List<Record> listData)
         {
             ListView lvRecords = new ListView
             {

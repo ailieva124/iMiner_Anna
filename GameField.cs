@@ -28,7 +28,7 @@ namespace iMiner
             InitializeComponent();
             MenuWnd = menu;
         }
-        public GameField(Menu menu, int row, int col, int mines, int size, String bestScore) : this(menu)
+        public GameField(Menu menu, int row, int col, int mines, int size, string bestScore) : this(menu)
         {
             lbBombs.Text = mines.ToString();
             lbBest.Text = $"Best: {bestScore}";
@@ -38,7 +38,7 @@ namespace iMiner
             for (int i = 0; i < row; i++)
                 for (int j = 0; j < col; j++)
                 {
-                    Grid[i,j] = new PictureBox()
+                    Grid[i, j] = new PictureBox()
                     {
                         Name = i + "," + j,
                         BackColor = Color.White,
@@ -47,10 +47,10 @@ namespace iMiner
                         BorderStyle = BorderStyle.FixedSingle,
                         Location = new Point(size * j, size * i)
                     };
-                    Grid[i,j].MouseUp += new MouseEventHandler(Grid_MouseUp);
+                    Grid[i, j].MouseUp += new MouseEventHandler(Grid_MouseUp);
 
                     panFields.Size = new Size(col * size, row * size);
-                    panFields.Controls.Add(Grid[i,j]);
+                    panFields.Controls.Add(Grid[i, j]);
                 }
 
             this.ClientSize = new Size(col * size, panInfo.Height + panFields.Height);
@@ -115,7 +115,7 @@ namespace iMiner
             {
                 // Click for dig
                 case MouseButtons.Left:
-                    if (Fields.IsFlagged(pbX,pbY))
+                    if (Fields.IsFlagged(pbX, pbY))
                         break;
                     else if (Fields.IsMine(pbX, pbY))
                         EndGame(LooseGame);
@@ -131,15 +131,15 @@ namespace iMiner
                                     return;
 
                             HashSet<int> safeCells = Fields.GetSafeNeighbors(pbX, pbY);
-                            foreach( int cell in safeCells )
+                            foreach (int cell in safeCells)
                             {
                                 int x = cell / Grid.GetLength(1);
                                 int y = cell % Grid.GetLength(1);
-                                if(Fields.CountMines(x, y) == 0)
+                                if (Fields.CountMines(x, y) == 0)
                                     DrawSafeCells(x, y);
                                 else
                                 {
-                                    if(!Fields.IsDiscoveredSafeCell(x,y))
+                                    if (!Fields.IsDiscoveredSafeCell(x, y))
                                         Fields.Discovered.Add(cell);
                                     Grid[x, y].BackColor = Color.LightGray;
                                     minesCnt = Fields.CountMines(x, y);
@@ -156,7 +156,7 @@ namespace iMiner
 
                 // Click for flag
                 case MouseButtons.Right:
-                    if(Fields.IsDiscoveredSafeCell(pbX, pbY))
+                    if (Fields.IsDiscoveredSafeCell(pbX, pbY))
                         break;
 
                     if (Fields.IsFlagged(pbX, pbY))
@@ -184,15 +184,15 @@ namespace iMiner
             {
                 int i = safeCell / Grid.GetLength(1);
                 int j = safeCell % Grid.GetLength(1);
-                Grid[i,j].BackColor = Color.LightGray;
+                Grid[i, j].BackColor = Color.LightGray;
                 int minesCnt = Fields.CountMines(i, j);
                 if (minesCnt > 0)
                 {
-                    Grid[i,j].Tag = minesCnt;
-                    Grid[i,j].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
+                    Grid[i, j].Tag = minesCnt;
+                    Grid[i, j].Image = (Image)Properties.Resources.ResourceManager.GetObject($"number{minesCnt}");
                 }
                 else
-                    Grid[i,j].Enabled = false;
+                    Grid[i, j].Enabled = false;
             }
         }
         internal void Game_Pause(object sender, EventArgs e)
@@ -248,7 +248,7 @@ namespace iMiner
             tClock.Stop();
             if (exitCode == WinGame)
             {
-                if(MenuWnd.AddRecordToList(Menu.GameMode, ElapsedSeconds))
+                if (MenuWnd.AddRecordToList(Menu.GameMode, ElapsedSeconds))
                     this.lbBest.Text = $"Best: {Record.GetResult(ElapsedSeconds)}";
             }
             else
@@ -257,8 +257,8 @@ namespace iMiner
                 {
                     int i = mine / Grid.GetLength(1);
                     int j = mine % Grid.GetLength(1);
-                    Grid[i,j].BackColor = Color.Red;
-                    Grid[i,j].Image = Properties.Resources.mine;
+                    Grid[i, j].BackColor = Color.Red;
+                    Grid[i, j].Image = Properties.Resources.mine;
                 }
             }
             GameStatus = Ended;
