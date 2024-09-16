@@ -12,11 +12,13 @@ namespace iMiner
 {
     public partial class NewRecord : Form
     {
+        bool isNameValid, isSubmiting;
         public bool isFirstRecord;
-        private bool isNameValid, isSubmiting;
-        private const int minChars = 3, maxChars = 18;
-        private static string lastUsedName = "I_AM_MINER";
         public readonly Record playerRecord = new Record();
+
+        const int minChars = 3, maxChars = 18;
+        static string lastUsedName = "I_AM_MINER";
+        static AutoCompleteStringCollection listNames = new AutoCompleteStringCollection();
 
         public int Score
         {
@@ -45,6 +47,8 @@ namespace iMiner
         {
             InitializeComponent();
             tbNameInput.MaxLength = maxChars;
+            tbNameInput.AutoCompleteCustomSource = listNames;
+            listNames.Add(lastUsedName);
         }
 
         private void On_Load(object sender, EventArgs e)
@@ -83,10 +87,13 @@ namespace iMiner
         {
             if (isSubmiting)
             {
-                if(!isNameValid)
+                if (!isNameValid)
                     e.Cancel = true;
                 else
+                {
                     lastUsedName = playerRecord.plName;
+                    listNames.Add(lastUsedName);
+                }
                 isSubmiting = false;
             }
         }

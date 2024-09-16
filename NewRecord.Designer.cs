@@ -39,7 +39,8 @@ namespace iMiner
             // tbNameInput
             // 
             this.tbNameInput.AllowDrop = true;
-            this.tbNameInput.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
+            this.tbNameInput.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tbNameInput.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbNameInput.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             resources.ApplyResources(this.tbNameInput, "tbNameInput");
             this.tbNameInput.Name = "tbNameInput";

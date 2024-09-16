@@ -251,7 +251,9 @@ namespace iMiner
             if (exitCode == WinGame)
             {
                 if (MenuWnd.AddRecordToList(Menu.GameMode, ElapsedSeconds))
-                    this.lbBest.Text = $"Best: {Record.GetResult(ElapsedSeconds)}";
+                    lbBest.Text = $"Best: {Record.GetResult(ElapsedSeconds)}";
+                else
+                    MessageBox.Show("You discovered all safe squares!", "Victory");
             }
             else
             {
@@ -262,6 +264,7 @@ namespace iMiner
                     Grid[i, j].BackColor = Color.Red;
                     Grid[i, j].Image = Properties.Resources.mine;
                 }
+                MessageBox.Show("You clicked on a mine!", "Game Over");
             }
             GameStatus = Ended;
         }
