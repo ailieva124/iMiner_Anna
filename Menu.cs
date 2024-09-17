@@ -78,11 +78,34 @@ namespace iMiner
                 ImeMode = ImeMode.NoControl,
                 UseVisualStyleBackColor = false,
                 BackgroundImageLayout = ImageLayout.None,
-                Font = new Font("Snap ITC", 13.8F, FontStyle.Regular, GraphicsUnit.Point)
+                Font = new Font("Snap ITC", 13.8F, FontStyle.Regular)
             };
             btn.Click += new EventHandler(this.HomeBtns_Click);
 
             return btn;
+        }
+        private void HomeBtns_Click(object sender, EventArgs e)
+        {
+            Button levelType = (Button)sender;
+            switch (levelType.Text)
+            {
+                case "Easy":
+                case "Medium":
+                case "Hard":
+                    NewGame_InitialiseWindow(levelType.Text);
+                    break;
+                case "Records":
+                    ShowRecords(sender, e);
+                    break;
+            }
+        }
+        private void CenterX_PanControls(object control, int right = 0)
+        {
+            Control c = (Control)control;
+            int x = (panControls.Width - c.Width) / 2;
+            if (right != 0)
+                x += 350;
+            c.Location = new Point(x, right);
         }
         public bool AddRecordToList(int levelType, int newRecord)
         {
@@ -144,29 +167,6 @@ namespace iMiner
                 gameField.GameStatus = GameField.Ended;
             }
             return true; // Game is ended or not started
-        }
-        private void CenterX_PanControls(object control, int right = 0)
-        {
-            Control c = (Control)control;
-            int x = (panControls.Width - c.Width) / 2;
-            if (right != 0)
-                x += 350;
-            c.Location = new Point(x, right);
-        }
-        private void HomeBtns_Click(object sender, EventArgs e)
-        {
-            Button levelType = (Button)sender;
-            switch (levelType.Text)
-            {
-                case "Easy":
-                case "Medium":
-                case "Hard":
-                    NewGame_InitialiseWindow(levelType.Text);
-                    break;
-                case "Records":
-                    ShowRecords(sender, e);
-                    break;
-            }
         }
 
         // MenuStrip Events

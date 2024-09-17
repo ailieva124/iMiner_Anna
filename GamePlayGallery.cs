@@ -28,7 +28,6 @@ namespace iMiner
 
         private void GamePlayGallery_Load(object sender, EventArgs e)
         {
-            
             this.Focus();
             lbLang.Text = LangInfo;
             BtnActiveSlide = btnSlide1;

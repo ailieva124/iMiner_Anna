@@ -60,7 +60,11 @@ namespace iMiner
 
         private void GetHint(object sender, EventArgs e)
         {
-            if (hintsUsed >= 3) return;
+            if (hintsUsed >= 3)
+            {
+                pbHelper.Visible = false;
+                return;
+            }
             Random rand = new Random();
             do
             {
@@ -268,9 +272,6 @@ namespace iMiner
             }
             GameStatus = Ended;
         }
-        private void GameField_Leave(object sender, EventArgs e)
-        {
-            MenuWnd.Focus();
-        }
+        private void GameField_Leave(object sender, EventArgs e) => MenuWnd.Focus();
     }
 }

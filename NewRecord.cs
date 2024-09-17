@@ -55,8 +55,7 @@ namespace iMiner
         {
             if (isFirstRecord)
                 this.Text = "First record for this category!";
-            if (lastUsedName != "") // example: 1st in Easy BUT not 1st in program
-                tbNameInput.Text = lastUsedName;
+            tbNameInput.Text = lastUsedName;
         }
 
         private void MsgWrongData()
